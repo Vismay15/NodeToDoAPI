@@ -1,5 +1,8 @@
 var mongoose = require('mongoose');
 
+
+//creating a model for a collection 'ToDo', with validation and defaults
+
 var Todo = mongoose.model('Todo', {
   text: {
     type: String,

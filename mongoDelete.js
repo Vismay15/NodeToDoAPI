@@ -10,14 +10,8 @@ MongoClient.connect('mongodb://localhost:27017/ToDoApp',(err,client)=>{
     const db = client.db('ToDoApp');
 
     db.collection('ToDos')
-    .find({
-        task:'loopback Expert'
-    })
-    .toArray()
-    .then((docs)=>{
-        console.log('Fetched');
-        console.log(JSON.stringify(docs,undefined,2));
-    },(error)=>{
-        console.log('Error in fetching the docs',error);
+    .deleteMany({text:'start learning express.js'})
+    .then((result)=>{
+        console.log(result);
     })
 })

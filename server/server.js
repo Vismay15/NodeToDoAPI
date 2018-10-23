@@ -1,3 +1,4 @@
+var _  = require('lodash');
 var express = require('express');
 var bodyParser = require('body-parser');
 var {ObjectID} = require('mongodb');
@@ -62,7 +63,6 @@ app.get('/getAllToDos',(req,res)=>{
 
 app.post('/deletebyid',(req,res)=>{
   var inputID = req.body.id;
-  console.log(inputID);
   if (!ObjectID.isValid(inputID) || inputID == null || inputID == undefined) {
     res.status(400).send();
   } else {
@@ -73,6 +73,44 @@ app.post('/deletebyid',(req,res)=>{
     })
   }
 });
+
+app.patch('/updateNote/:id',(req,res)=>{
+  var inputID = req.params.id;
+  var body = _.pick(req.body,['text','completed']);
+
+  if (!ObjectID.isValid(inputID) || inputID == null || inputID == undefined) {
+    res.status(400).send();
+  } else {
+
+    if (_.isBoolean(body.completed) && body.completed) {
+      body.completedAt = new Date().getTime();
+    } else {
+      body.completed = false;
+      body.completedAt = null;
+    }
+
+    //find and update
+    Todo.findByIdAndUpdate(
+      inputID,
+      {
+        $set:body
+      },
+      {
+        new:true
+      }
+    )
+    .then((toDo)=>{
+      if (!toDo) {
+        res.status(400).send();
+      } else {
+        res.send({toDo});
+      }
+    })
+    .catch((error)=>{
+      res.status(400).send(error);
+    })
+  }
+})
 
 //start the app on port 3000
 app.listen(port, () => {

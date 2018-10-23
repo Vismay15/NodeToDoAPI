@@ -49,7 +49,30 @@ app.get('/fetchByID/:id',(req,res)=>{
       }
     })
   }
-})
+});
+
+app.get('/getAllToDos',(req,res)=>{
+  Todo.find()
+  .then((ToDo)=>{
+    res.send({ToDo});
+  },(error)=>{
+    res.status(400).send(error);
+  })
+});
+
+app.post('/deletebyid',(req,res)=>{
+  var inputID = req.body.id;
+  console.log(inputID);
+  if (!ObjectID.isValid(inputID) || inputID == null || inputID == undefined) {
+    res.status(400).send();
+  } else {
+    Todo.findByIdAndRemove(inputID).then((DeletedNote)=>{
+      res.status(200).send(DeletedNote);
+    },(error)=>{
+      res.status(400).send(error)
+    })
+  }
+});
 
 //start the app on port 3000
 app.listen(port, () => {

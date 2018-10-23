@@ -7,6 +7,9 @@ var {mongoose} = require('./db/mongoose');
 var {Todo} = require('./models/todo');
 var {User} = require('./models/user');
 
+var port = process.env.port || 3000;
+
+
 //initialize the app using express
 var app = express();
 
@@ -49,6 +52,6 @@ app.get('/fetchByID/:id',(req,res)=>{
 })
 
 //start the app on port 3000
-app.listen(3000, () => {
-  console.log('Started on port 3000');
+app.listen(port, () => {
+  console.log(`Started on port ${port}`);
 });

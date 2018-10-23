@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 //connecting to the mongodb server and 'test' database in it
-mongoose.connect('mongodb://localhost:27017/test');
+mongoose.connect(process.env.MONGODB_URI ||'mongodb://localhost:27017/test');
 
 //exporting the mongoose object
 module.exports = {mongoose};
